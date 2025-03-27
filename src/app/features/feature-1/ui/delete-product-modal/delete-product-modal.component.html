@@ -1,0 +1,9 @@
+<div class="modal-overlay" (click)="closeModal()"></div>
+<div class="modal">
+  <h2>¿Estás seguro de eliminar el producto {{ productName }}?</h2>
+
+  <div class="modal-buttons">
+    <button (click)="closeModal()" class="cancel-button">Cancelar</button>
+    <button (click)="confirmDeleteProduct()" class="confirm-button">Confirmar</button>
+  </div>
+</div>

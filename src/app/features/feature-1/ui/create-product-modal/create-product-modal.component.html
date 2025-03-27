@@ -1,0 +1,48 @@
+<div class="modal-overlay" (click)="closeModal()"></div>
+<div class="modal">
+  <h2>Formulario de Registro</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-grid">
+      <div>
+        <label>ID</label>
+        <input formControlName="id" />
+        <small *ngIf="f['id'].touched && f['id'].invalid">
+          {{ f['id'].errors?.['required'] ? 'Campo requerido' : 'ID no válido' }}
+        </small>
+      </div>
+
+      <div>
+        <label>Nombre</label>
+        <input formControlName="name" />
+      </div>
+
+      <div>
+        <label>Descripción</label>
+        <input formControlName="description" />
+        <small *ngIf="f['description'].touched && f['description'].invalid">Este campo es requerido</small>
+      </div>
+
+      <div>
+        <label>Logo</label>
+        <input formControlName="logo" />
+        <small *ngIf="f['logo'].touched && f['logo'].invalid">Este campo es requerido</small>
+      </div>
+
+      <div>
+        <label>Fecha Liberación</label>
+        <input type="date" formControlName="date_release" />
+      </div>
+
+      <div>
+        <label>Fecha Revisión</label>
+        <input type="date" formControlName="date_revision" [disabled]="true" />
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <button type="button" class="reset" (click)="reset()">Reiniciar</button>
+      <button type="submit" class="submit">Enviar</button>
+    </div>
+  </form>
+</div>

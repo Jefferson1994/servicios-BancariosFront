@@ -11,3 +11,13 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'servicios-BancariosFront';
 }
+
+
+//import { Component } from '@angular/core';
+
+//@Component({
+//  selector: 'app-root',
+//  template: `<h1>Welcome to the app!</h1>`,
+//  standalone: true
+//})
+//export class AppComponent {}

@@ -1,0 +1,67 @@
+<section class="layout">
+  <header class="header">
+    <img src="assets/icono-banco.svg" alt="Banco" />
+    <h1>BANCO</h1>
+  </header>
+
+  <div class="actions">
+    <button class="add-button" (click)="onAddProduct()">Agregar</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Nombre del producto</th>
+          <th>Descripción</th>
+          <th>Fecha de liberación</th>
+          <th>Fecha de reestructuración</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td><img [src]="product.logo" alt="Logo" class="logo" /></td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.date_release }}</td>
+          <td>{{ product.date_revision }}</td>
+          <!-- Celda oculta con el ID -->
+          <td class="hidden-id">{{ product.id }}</td>
+          <td>
+            <button (click)="onDelete(product.id, product.name)" class="three-dots-button">...</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <p>{{ products.length }} Resultados</p>
+
+    <select [(ngModel)]="limit" (change)="onLimitChange()">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
+    </select>
+  </div>
+
+  <!-- Modal -->
+  <app-create-product-modal
+    *ngIf="showModal"
+    (close)="onModalClose()"
+    (submitForm)="onModalSubmit($event)">
+  </app-create-product-modal>
+
+  <!-- Modal confirmar Eliminar -->
+  <app-delete-product-modal
+  *ngIf="showDeleteModal"
+  [productName]="selectedProductName"
+  [productId]="selectedProductId"
+  (close)="onDeleteModalClose()"
+  (confirmDelete)="onConfirmDelete()">
+</app-delete-product-modal>
+
+
+</section>
