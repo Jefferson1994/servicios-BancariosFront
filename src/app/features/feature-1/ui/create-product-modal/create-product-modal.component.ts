@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CreateProductUseCase } from '../../domain/use-cases/createProduct.use-case'; // Asegúrate de importar el caso de uso
-import { Product } from '../../domain/models/product.model'; // Asegúrate de importar el modelo de Producto
+//import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+//import { CreateProductUseCase } from '../../domain/use-cases/createProduct.use-case'; // Asegúrate de importar el caso de uso
+//import { Product } from '../../domain/models/product.model'; // Asegúrate de importar el modelo de Producto
 
 @Component({
   selector: 'app-create-product-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],  // Importamos CommonModule y ReactiveFormsModule
+  imports: [/*CommonModule, ReactiveFormsModule*/],  // Importamos CommonModule y ReactiveFormsModule
   templateUrl: './create-product-modal.component.html',
   styleUrls: ['./create-product-modal.component.css'],
 })
 export class CreateProductModalComponent {
+  /*
   @Output() close = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<any>();
 
@@ -47,14 +48,28 @@ export class CreateProductModalComponent {
         .catch(error => {
           console.error('Error al crear producto:', error);
 
-          if (error.status === 400) {
-            console.error('Detalles del error:', error.error.errors); // Imprime los errores del servidor
+          // Verificamos si el error tiene una propiedad 'error' con los detalles
+          if (error.status === 400 && error.error.errors) {
+            // Si 'errors' es un array, lo recorremos y mostramos los mensajes de error
+            const errorMessages = error.error.errors.map((err: any) => {
+              // Accedemos a los detalles de cada error
+              const fieldError = Object.values(err.constraints).join(', ');  // Unir los errores si hay más de uno
+              return `${err.property}: ${fieldError}`;  // Mostramos el campo y el mensaje de error
+            }).join('\n');  // Unir los errores en un solo string separados por saltos de línea
+
+            // Mostrar los errores en un alert
+            alert(`Hubo un problema al crear el producto :\n${errorMessages}`);
+          } else {
+            // Si no se encuentra la propiedad 'errors', mostramos un mensaje genérico
+            alert('Hubo un problema al crear el producto. Por favor, inténtalo nuevamente.');
           }
         });
     } else {
       this.form.markAllAsTouched(); // Mostrar los errores de validación
+      alert('Por favor, completa todos los campos correctamente.');  // Alerta de validación
     }
   }
+
 
 
   // Función para cerrar el modal
@@ -71,4 +86,5 @@ export class CreateProductModalComponent {
   get f() {
     return this.form.controls;
   }
+    */
 }

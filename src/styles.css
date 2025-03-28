@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilo del contenedor del encabezado */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;          /* Espacio entre la imagen y el texto */
+  margin-bottom: 2rem;
+}
+
+/* Estilo para la imagen */
+.header img {
+  width: 32px;        /* Tamaño de la imagen */
+  height: auto;       /* Mantener la proporción de la imagen */
+}
+
+/* Estilo para el enlace (a) */
+.logo-link {
+  display: flex;
+  align-items: center;  /* Alineación vertical de los elementos dentro del enlace */
+  justify-content: center;  /* Alineación horizontal */
+  gap: 8px;             /* Espacio entre la imagen y el texto */
+  text-decoration: none;  /* Eliminar subrayado */
+  color: black;           /* Asegura que el texto sea de color negro */
+}
+
+/* Estilo para el texto */
+.logo-link h1 {
+  font-size: 1.5rem;     /* Tamaño del texto */
+  font-weight: bold;     /* Peso de la fuente */
+  margin: 0;             /* Elimina márgenes adicionales */
+}

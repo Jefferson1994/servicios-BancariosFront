@@ -1,5 +1,5 @@
 
-// modelo de un producto 
+// modelo de un producto
 export interface Product {
   id: string;
   name: string;
@@ -8,3 +8,6 @@ export interface Product {
   date_release: string;
   date_revision: string;
 }
+
+
+

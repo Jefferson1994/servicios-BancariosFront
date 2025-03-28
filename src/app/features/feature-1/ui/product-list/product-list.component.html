@@ -1,15 +1,39 @@
 <section class="layout">
-  <header class="header">
-    <img src="assets/icono-banco.svg" alt="Banco" />
-    <h1>BANCO</h1>
-  </header>
 
-  <div class="actions">
-    <button class="add-button" (click)="onAddProduct()">Agregar</button>
+
+   <!-- Buscador -->
+  <div>
+    <div class="search-section">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        placeholder="Buscar producto..."
+      />
+    </div>
+
+    <div class="actions">
+      <button class="add-button" (click)="onAddProduct()">Agregar</button>
+
+    </div>
+
   </div>
 
+
   <div class="table-container">
-    <table>
+    <!-- Skeleton loader -->
+    <div *ngIf="isLoading" class="skeleton">
+      <div class="skeleton-row" *ngFor="let i of [1, 2, 3, 4, 5]">
+        <div class="skeleton-column"></div>
+        <div class="skeleton-column"></div>
+        <div class="skeleton-column"></div>
+        <div class="skeleton-column"></div>
+        <div class="skeleton-column"></div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <table *ngIf="!isLoading">
       <thead>
         <tr>
           <th>Logo</th>
@@ -21,17 +45,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products">
-          <td><img [src]="product.logo" alt="Logo" class="logo" /></td>
+        <tr *ngFor="let product of paginatedProducts">
+          <td><img [src]="'https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg'" alt="Logo" class="logo" /></td>
           <td>{{ product.name }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.date_release }}</td>
           <td>{{ product.date_revision }}</td>
-          <!-- Celda oculta con el ID -->
-          <td class="hidden-id">{{ product.id }}</td>
-          <td>
-            <button (click)="onDelete(product.id, product.name)" class="three-dots-button">...</button>
-          </td>
+          <td><button (click)="onDelete(product.id, product.name)" class="three-dots-button">...</button></td>
         </tr>
       </tbody>
     </table>
@@ -47,21 +67,19 @@
     </select>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal
   <app-create-product-modal
     *ngIf="showModal"
     (close)="onModalClose()"
     (submitForm)="onModalSubmit($event)">
-  </app-create-product-modal>
+  </app-create-product-modal>-->
 
   <!-- Modal confirmar Eliminar -->
   <app-delete-product-modal
-  *ngIf="showDeleteModal"
-  [productName]="selectedProductName"
-  [productId]="selectedProductId"
-  (close)="onDeleteModalClose()"
-  (confirmDelete)="onConfirmDelete()">
-</app-delete-product-modal>
-
-
+    *ngIf="showDeleteModal"
+    [productName]="selectedProductName"
+    [productId]="selectedProductId"
+    (close)="onDeleteModalClose()"
+    (confirmDelete)="onConfirmDelete()">
+  </app-delete-product-modal>
 </section>

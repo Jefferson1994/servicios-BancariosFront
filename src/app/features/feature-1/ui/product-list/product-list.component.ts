@@ -7,7 +7,7 @@ import { CreateProductModalComponent } from '../create-product-modal/create-prod
 import { CreateProductUseCase } from '../../domain/use-cases/createProduct.use-case';
 import { DeleteProductModalComponent } from '../delete-product-modal/delete-product-modal.component';
 import { DeleteProductUseCase } from '../../domain/use-cases/deleteProduct.use-case';
-// ...
+import { Router } from '@angular/router';
 
 
 
@@ -29,16 +29,41 @@ export class ProductListComponent implements OnInit {
   limit = 5;
   selectedProductId: string = '';  // Definir la propiedad selectedProductId
   selectedProductName: string = '';  // Definir la propiedad selectedProductName
+  errorMessage: string = '';
+  isLoading: boolean = true;
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
-    this.api.getAll()
-      .then((data) => {
-        this.products = data;
-      })
-      .catch((err) => {
-        console.error('Error al obtener productos', err);
-      });
+    this.loadProducts();
   }
+
+  loadProducts(): void {
+    this.isLoading = true;  // Mostrar los skeletons
+
+    // Simulamos un retraso de 1 segundo
+    setTimeout(() => {
+      this.api.getAll()
+        .then((data) => {
+          this.products = data;
+          this.isLoading = false;  // Ocultar los skeletons y mostrar la tabla
+          this.errorMessage = '';  // Limpiamos el mensaje de error si todo va bien
+        })
+        .catch((err) => {
+          console.error('Error al obtener productos', err);
+
+          // Mostrar el mensaje de error que devuelve el backend
+          if (err && err.error && err.error.message) {
+            this.errorMessage = err.error.message;  // Asignamos el mensaje del backend
+          } else {
+            // Si no hay mensaje de error en la respuesta, mostrar un error genérico
+            this.errorMessage = 'Hubo un problema al cargar los productos. Por favor, intenta nuevamente más tarde.';
+          }
+
+          this.isLoading = false;  // Asegúrate de ocultar los skeletons en caso de error
+        });
+    }, 1000); // El retraso de 1 segundo
+  }
+
 
   get filteredProducts(): Product[] {
     return this.products.filter(p =>
@@ -46,6 +71,7 @@ export class ProductListComponent implements OnInit {
       p.id.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
+
 
   get paginatedProducts(): Product[] {
     return this.filteredProducts.slice(0, this.limit);
@@ -63,17 +89,18 @@ export class ProductListComponent implements OnInit {
 
   onAddProduct(): void {
     console.log("click en boton abrir modal")
-    this.showModal = true; // 👈 activa el modal
+    //this.showModal = true; // 👈 activa el modal
+
+    this.router.navigate(['/crear-producto']);
   }
 
   onModalClose(): void {
     this.showModal = false; // 👈 cierra el modal
   }
 
-  onModalSubmit(product: Product): void {
-    // Aquí podrías llamar al caso de uso CreateProductUseCase
-    console.log('Producto a guardar:', product);
-    this.showModal = false;
+  onModalSubmit(newProduct: Product): void {
+
+    this.loadProducts();
   }
 
   onDelete(productId: string, productName: string): void {
@@ -90,6 +117,13 @@ export class ProductListComponent implements OnInit {
 
 
   onConfirmDelete(): void {
-
+    this.loadProducts();  // Recargamos los productos después de eliminar uno
+    this.showDeleteModal = false;  // Cerramos el modal
   }
+
+  onProductDeleted(): void {
+    this.loadProducts(); // Recargamos la lista después de la eliminación
+  }
+
+
 }

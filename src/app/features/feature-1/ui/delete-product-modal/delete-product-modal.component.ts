@@ -14,6 +14,7 @@ export class DeleteProductModalComponent {
   @Input() productId: string = '';   // Recibe el ID del producto
   @Output() close = new EventEmitter<void>();
   @Output() confirmDelete = new EventEmitter<string>(); // Emite el ID del producto para eliminar
+  @Output() productDeleted = new EventEmitter<void>();  // Emite el evento de eliminación
 
   constructor(
     private productApiService: ProductApiService,
@@ -28,8 +29,11 @@ export class DeleteProductModalComponent {
     console.log("click en eliminar producto por id"+this.productId)
     //this.confirmDelete.emit(this.productId); // Emite el ID del producto para confirmación
     this.onConfirmDelete(this.productId);
+    this.productDeleted.emit();
       // Cierra el modal
   }
+
+
 
   onConfirmDelete(productId: string): void {
     console.log('Confirmando eliminación del producto con ID:', productId);
@@ -38,14 +42,31 @@ export class DeleteProductModalComponent {
     this.deleteProductUseCase.execute(productId)
       .then(() => {
         console.log('Producto eliminado con éxito');
-        //this.loadProducts(); // Recargamos la lista de productos
-        //this.showDeleteModal = false; // Cerramos el modal
+        // Mostramos un mensaje de éxito
+        alert('El producto ha sido eliminado con éxito.');
+        this.productDeleted.emit();
         this.closeModal();
       })
       .catch((error) => {
         console.error('Error al eliminar el producto:', error);
+
+        // Si el error tiene detalles específicos (por ejemplo, errores del servidor)
+        if (error && error.errors) {
+          const errorMessages = error.errors.map((err: any) => {
+            // Accedemos a los detalles de cada error (por ejemplo, 'message')
+            const fieldError = Object.values(err.constraints).join(', ');
+            return `${err.property}: ${fieldError}`;
+          }).join('\n');
+
+          // Mostramos el error en un alert
+          alert(`Hubo un problema al eliminar el producto:\n${errorMessages}`);
+        } else {
+          // Si no se encuentra la propiedad 'errors', mostramos un mensaje genérico
+          alert('Hubo un problema al eliminar el producto. Por favor, inténtalo nuevamente.');
+        }
       });
   }
+
 
 
 

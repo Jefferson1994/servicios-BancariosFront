@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { ProductListComponent } from './features/feature-1/ui/product-list/product-list.component';
-
+import { CreateProductFormularioComponent } from './features/feature-1/ui/create-product-formulario/create-product-formulario.component';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
@@ -10,6 +12,16 @@ export const routes: Routes = [
   {
     path: 'productos',
     component: ProductListComponent
+  },
+  {
+    path: 'crear-producto',  // Ruta correcta
+    component: CreateProductFormularioComponent
   }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
 //export const routes: Routes = [];

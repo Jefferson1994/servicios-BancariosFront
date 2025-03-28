@@ -1,0 +1,75 @@
+<div class="form-container">
+  <div class="form-wrapper">
+    <h2>Formulario de Registro</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <!-- ID -->
+        <div>
+          <label>ID</label>
+          <input formControlName="id" (blur)="checkIdExists($event)" />
+          <small *ngIf="f['id'].touched && f['id'].invalid">
+            {{ f['id'].errors?.['required'] ? 'Campo requerido' : '' }}
+            {{ f['id'].errors?.['minlength'] ? 'El ID debe tener al menos 3 caracteres.' : '' }}
+            {{ f['id'].errors?.['maxlength'] ? 'El ID no puede tener más de 10 caracteres.' : '' }}
+            {{ f['id'].errors?.['pattern'] ? 'El ID debe ser alfanumérico.' : '' }}
+            {{ f['id'].errors?.['idExists'] ? 'El ID ya está en uso.' : '' }}
+          </small>
+        </div>
+
+        <!-- Nombre -->
+        <div>
+          <label>Nombre</label>
+          <input formControlName="name" />
+          <small *ngIf="f['name'].touched && f['name'].invalid">
+            {{ f['name'].errors?.['required'] ? 'Campo requerido' : '' }}
+            {{ f['name'].errors?.['minlength'] ? 'El nombre debe tener al menos 5 caracteres.' : '' }}
+            {{ f['name'].errors?.['maxlength'] ? 'El nombre no puede tener más de 100 caracteres.' : '' }}
+          </small>
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label>Descripción</label>
+          <input formControlName="description" />
+          <small *ngIf="f['description'].touched && f['description'].invalid">
+            {{ f['description'].errors?.['required'] ? 'Campo requerido' : '' }}
+            {{ f['description'].errors?.['minlength'] ? 'La descripción debe tener al menos 10 caracteres.' : '' }}
+            {{ f['description'].errors?.['maxlength'] ? 'La descripción no puede tener más de 200 caracteres.' : '' }}
+          </small>
+        </div>
+
+        <!-- Logo -->
+        <div>
+          <label>Logo</label>
+          <input formControlName="logo" />
+          <small *ngIf="f['logo'].touched && f['logo'].invalid">Este campo es requerido</small>
+        </div>
+
+        <!-- Fecha de Liberación -->
+        <div>
+          <label>Fecha Liberación</label>
+          <input type="date" formControlName="date_release" />
+          <small *ngIf="f['date_release'].touched && f['date_release'].invalid">
+            {{ f['date_release'].errors?.['required'] ? 'Campo requerido' : '' }}
+            {{ f['date_release'].errors?.['minDate'] ? 'La fecha debe ser igual o posterior a la fecha actual.' : '' }}
+          </small>
+        </div>
+
+        <!-- Fecha de Revisión -->
+        <div>
+          <label>Fecha Revisión</label>
+          <input type="date" formControlName="date_revision" [disabled]="true" />
+          <small *ngIf="f['date_revision'].touched && f['date_revision'].invalid">
+            {{ f['date_revision'].errors?.['required'] ? 'Campo requerido' : '' }}
+            {{ f['date_revision'].errors?.['dateMismatch'] ? 'La fecha de revisión debe ser un año posterior a la fecha de liberación.' : '' }}
+          </small>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button type="button" class="reset" (click)="reset()">Reiniciar</button>
+        <button type="submit" class="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
