@@ -121,6 +121,45 @@ export class ProductApiService implements ProductRepository {
       });
   }
 
+  getProductById(productId: string): Promise<Product> {
+    const url = `${this.baseUrl}/${productId}`;  // URL con el ID del producto
+    console.log("La URL construida: " + url);  // Verificamos la URL construida
+
+    return this.http.get<Product>(url)  // Esperamos que la respuesta sea directamente un objeto Product
+      .toPromise()
+      .then(res => {
+        console.log('Respuesta de la API:', res);  // Verificamos que la respuesta sea la esperada
+        if (!res) throw new Error('Error al obtener el producto');  // Si la respuesta no es válida
+        return res;  // Devolvemos directamente el objeto del producto
+      })
+      .catch(error => {
+        console.error('Error en la solicitud HTTP:', error);  // Verificamos el error
+        throw new Error('Error al obtener el producto');
+      });
+  }
+
+  // En la capa de infraestructura
+  update(id: string, updatedProduct: Product): Promise<Product> {
+    const url = `${this.baseUrl}/${id}`;  
+    console.log('Actualizando producto con ID:', id);
+    console.log('Datos a actualizar:', updatedProduct);
+
+    return this.http.put<{ data: Product }>(url, updatedProduct)
+      .toPromise()
+      .then(res => {
+        if (!res?.data) throw new Error('Error al actualizar el producto');
+        return res.data;  // Devolvemos el producto actualizado
+      })
+      .catch(error => {
+        console.error('Error al actualizar producto:', error);
+        throw new Error('Error al actualizar el producto');
+      });
+  }
+
+
+
+
+
 
 
 

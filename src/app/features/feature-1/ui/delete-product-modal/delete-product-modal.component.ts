@@ -5,7 +5,7 @@ import { ProductApiService } from '../../infrastructure/product-api.service';
 
 @Component({
   selector: 'app-delete-product-modal',
-  standalone: true,  // Hacerlo standalone
+  standalone: true,
   templateUrl: './delete-product-modal.component.html',
   styleUrls: ['./delete-product-modal.component.css'],
 })
@@ -22,26 +22,26 @@ export class DeleteProductModalComponent {
   ) {}
 
   closeModal(): void {
-    this.close.emit();  // Cierra el modal
+    this.close.emit();
   }
 
   confirmDeleteProduct(): void {
-    console.log("click en eliminar producto por id"+this.productId)
-    //this.confirmDelete.emit(this.productId); // Emite el ID del producto para confirmación
+    //console.log("click en eliminar producto por id"+this.productId)
+
     this.onConfirmDelete(this.productId);
     this.productDeleted.emit();
-      // Cierra el modal
+
   }
 
 
 
   onConfirmDelete(productId: string): void {
-    console.log('Confirmando eliminación del producto con ID:', productId);
+    //console.log('Confirmando eliminación del producto con ID:', productId);
 
     // Llamamos al caso de uso para eliminar el producto
     this.deleteProductUseCase.execute(productId)
       .then(() => {
-        console.log('Producto eliminado con éxito');
+        //console.log('Producto eliminado con éxito');
         // Mostramos un mensaje de éxito
         alert('El producto ha sido eliminado con éxito.');
         this.productDeleted.emit();

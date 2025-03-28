@@ -87,7 +87,7 @@ th {
   margin-top: 1rem;
 }
 .hidden-id {
-  display: none; /* Esto asegura que el ID no sea visible */
+  display: none;
 }
 
 /* Estilo para los tres puntos */
@@ -118,8 +118,8 @@ th {
 }
 
 .search-section input:focus {
-  border-color: #4CAF50; /* Color verde cuando el input está en foco */
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.6); /* Resalta el campo cuando está activo */
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
 }
 
 .search-section input::placeholder {
@@ -128,7 +128,7 @@ th {
 }
 
 .search-section input:focus::placeholder {
-  color: #4CAF50; /* Cambia el color del placeholder cuando está en foco */
+  color: #4CAF50;
 }
 
 .skeleton {

@@ -22,46 +22,54 @@ import { Router } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
   private readonly api = inject(ProductApiService);
-  showModal = false; //  bandera para mostrar u ocultar el modal
+  showModal = false; //  bandera para manera el modal
   showDeleteModal = false;
   products: Product[] = [];
   searchTerm = '';
   limit = 5;
-  selectedProductId: string = '';  // Definir la propiedad selectedProductId
-  selectedProductName: string = '';  // Definir la propiedad selectedProductName
+  selectedProductId: string = '';
+  selectedProductName: string = '';
   errorMessage: string = '';
-  isLoading: boolean = true;
+  isLoading: boolean = true; //variable para manejar el skeletons
   private readonly router = inject(Router);
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
-  loadProducts(): void {
-    this.isLoading = true;  // Mostrar los skeletons
+  reloadProductList(): void {
+    this.loadProducts();
+  }
 
-    // Simulamos un retraso de 1 segundo
+  deletereloadProductList(): void {
+    this.loadProducts();
+  }
+
+
+  loadProducts(): void {
+    this.isLoading = true;
+    //para mostra el skeletons con un segundo
     setTimeout(() => {
       this.api.getAll()
         .then((data) => {
           this.products = data;
-          this.isLoading = false;  // Ocultar los skeletons y mostrar la tabla
-          this.errorMessage = '';  // Limpiamos el mensaje de error si todo va bien
+          this.isLoading = false;
+          this.errorMessage = '';
         })
         .catch((err) => {
           console.error('Error al obtener productos', err);
 
           // Mostrar el mensaje de error que devuelve el backend
           if (err && err.error && err.error.message) {
-            this.errorMessage = err.error.message;  // Asignamos el mensaje del backend
+            this.errorMessage = err.error.message;
           } else {
-            // Si no hay mensaje de error en la respuesta, mostrar un error genérico
+            //  mostrar un error genérico
             this.errorMessage = 'Hubo un problema al cargar los productos. Por favor, intenta nuevamente más tarde.';
           }
 
-          this.isLoading = false;  // Asegúrate de ocultar los skeletons en caso de error
+          this.isLoading = false;
         });
-    }, 1000); // El retraso de 1 segundo
+    }, 1000);
   }
 
 
@@ -77,59 +85,51 @@ export class ProductListComponent implements OnInit {
     return this.filteredProducts.slice(0, this.limit);
   }
 
-  onSearch() {
-    // Se llama automáticamente con [(ngModel)]
-  }
 
-  onLimitChange() {
-    // Ya aplica automáticamente el filtro por paginado
-  }
 
 
 
   onAddProduct(): void {
     console.log("click en boton abrir modal")
-    //this.showModal = true; //  activa el modal
-
-    this.router.navigate(['/crear-producto']);
+    this.router.navigate(['/crear-producto']);// navegar a la ruta oara crea el producto
   }
 
 
   onEditProducto(productId: string): void {
     console.log("click en boton abrir modal"+productId)
     this.selectedProductId = productId;
-    this.showModal = true; //  activa el modal
+    this.showModal = true;
   }
 
   onModalClose(): void {
-    this.showModal = false; //  cierra el modal
+    this.showModal = false;
   }
 
   onModalSubmit(newProduct: Product): void {
 
-    this.loadProducts();
+    this.loadProducts();// metodo para cargar la lista de productos
   }
 
   onDelete(productId: string, productName: string): void {
-    console.log('Producto a eliminar con ID:', productId);  // Recuperamos el ID
-    this.selectedProductId = productId;  // Asignamos el ID del producto seleccionado
-    this.selectedProductName = productName;  // Asignamos el nombre del producto
-    this.showDeleteModal = true;  // Mostramos el modal de eliminación
+    //console.log('Producto a eliminar con ID:', productId);
+    this.selectedProductId = productId;// variables para comunicarme con el modal eliminar
+    this.selectedProductName = productName;
+    this.showDeleteModal = true;
   }
 
 
   onDeleteModalClose(): void {
-    this.showDeleteModal = false; //  cierra el modal
+    this.showDeleteModal = false;
   }
 
 
   onConfirmDelete(): void {
-    this.loadProducts();  // Recargamos los productos después de eliminar uno
-    this.showDeleteModal = false;  // Cerramos el modal
+    this.loadProducts();
+    this.showDeleteModal = false;
   }
 
   onProductDeleted(): void {
-    this.loadProducts(); // Recargamos la lista después de la eliminación
+    this.loadProducts();
   }
 
 

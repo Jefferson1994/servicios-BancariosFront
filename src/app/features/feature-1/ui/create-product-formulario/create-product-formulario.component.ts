@@ -27,7 +27,7 @@ export class CreateProductFormularioComponent {
   constructor(
     private fb: FormBuilder,
     private createProductUseCase: CreateProductUseCase,
-    private verifyProductIdUseCase: VerifyProductIdUseCase  // Inyectamos el caso de uso para la verificación del ID
+    private verifyProductIdUseCase: VerifyProductIdUseCase
 ) {
     this.form = this.fb.group({
       id: ['', [
@@ -43,14 +43,12 @@ export class CreateProductFormularioComponent {
 
       logo: ['', Validators.required],
 
-      // Validación de fecha de liberación: Requerida
-      date_release: ['', [Validators.required]],
 
-      // Validación de fecha de revisión: Requerida y dependiente de la fecha de liberación
+      date_release: ['', [Validators.required]],
       date_revision: [{ value: '', disabled: true }, [Validators.required]]
     });
 
-    // Cuando la fecha de liberación cambia, se actualiza la fecha de revisión
+
     this.form.get('date_release')?.valueChanges.subscribe(date => {
       if (date) {
         const oneYearLater = new Date(date);
@@ -65,16 +63,11 @@ export class CreateProductFormularioComponent {
 minDateValidator(control: AbstractControl) {
   const currentDate = new Date();
   const selectedDate = new Date(control.value);
-
-  // Ajustamos las horas de ambas fechas a 00:00:00 para evitar problemas con la zona horaria
-  currentDate.setHours(0, 0, 0, 0); // Establecemos la hora a las 00:00:00
-  selectedDate.setHours(0, 0, 0, 0); // Establecemos la hora a las 00:00:00
-
+  currentDate.setHours(0, 0, 0, 0);
+  selectedDate.setHours(0, 0, 0, 0);
   // Convertimos ambas fechas a formato YYYY-MM-DD para compararlas solo en base a la fecha
-  const currentDateString = currentDate.toLocaleDateString('en-CA'); // 'en-CA' es el formato YYYY-MM-DD
-  const selectedDateString = selectedDate.toLocaleDateString('en-CA'); // 'en-CA' es el formato YYYY-MM-DD
-
-  // Comparamos las fechas en formato YYYY-MM-DD
+  const currentDateString = currentDate.toLocaleDateString('en-CA');
+  const selectedDateString = selectedDate.toLocaleDateString('en-CA');
   return selectedDateString >= currentDateString ? null : { minDate: true };
 }
 dateMismatchValidator(control: AbstractControl) {
@@ -89,7 +82,7 @@ dateMismatchValidator(control: AbstractControl) {
         const id = control.value;
 
         if (id.length < 3 || id.length > 10 || !/^[a-zA-Z0-9]+$/.test(id)) {
-          return null; // El validador se detiene si el ID no es válido por formato
+          return null;
         }
 
         return new Observable(observer => {
@@ -110,11 +103,10 @@ dateMismatchValidator(control: AbstractControl) {
       }
 
 
-  // Función para enviar el producto creado
+
   submit(): void {
     console.log('Formulario válido:', this.form.valid);
 
-    // Para asegurarte de que el formulario es válido, debes usar el método `markAllAsTouched()` primero
     this.form.markAllAsTouched(); // Esto asegura que todos los campos se marquen como tocados antes de la validación
 
     // Esperar la validación asincrónica del campo 'id' (y cualquier otro campo que tenga validación asincrónica)
@@ -158,12 +150,11 @@ dateMismatchValidator(control: AbstractControl) {
   }
 
 
-  // Función para reiniciar el formulario
+
   reset(): void {
     this.form.reset();  // Limpiamos el formulario
   }
 
-  // Getter para acceder a los controles del formulario
   get f() {
     return this.form.controls;
   }

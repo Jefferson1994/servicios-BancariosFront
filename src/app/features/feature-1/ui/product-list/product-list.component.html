@@ -7,7 +7,7 @@
       <input
         type="text"
         [(ngModel)]="searchTerm"
-        (input)="onSearch()"
+
         placeholder="Buscar producto..."
       />
     </div>
@@ -62,7 +62,7 @@
   <div class="footer">
     <p>{{ products.length }} Resultados</p>
 
-    <select [(ngModel)]="limit" (change)="onLimitChange()">
+    <select [(ngModel)]="limit" >
       <option [value]="5">5</option>
       <option [value]="10">10</option>
       <option [value]="20">20</option>
@@ -73,8 +73,9 @@
   <app-create-product-modal
     *ngIf="showModal"
     (close)="onModalClose()"
-   
-    (submitForm)="onModalSubmit($event)">
+    [productId]="selectedProductId"
+    (submitForm)="onModalSubmit($event)"
+    (refreshList)="reloadProductList()">
   </app-create-product-modal>
 
   <!-- Modal confirmar Eliminar -->
@@ -83,6 +84,6 @@
     [productName]="selectedProductName"
     [productId]="selectedProductId"
     (close)="onDeleteModalClose()"
-    (confirmDelete)="onConfirmDelete()">
+    (productDeleted)="onConfirmDelete()">
   </app-delete-product-modal>
 </section>

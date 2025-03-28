@@ -4,18 +4,18 @@
   align-items: center;
   height: auto;
   padding: 2rem;
-  max-width: 80%;  /* Reducimos el tamaño del formulario en pantallas grandes */
+  max-width: 80%;
   background-color: #f5f7fa;  /* Fondo claro */
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agregamos sombra al contenedor */
-  margin: 2rem auto;  /* Centra el formulario con margen superior e inferior */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
 }
 
 .form-wrapper {
   background-color: white;  /* Fondo blanco para el formulario */
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del formulario */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -41,7 +41,7 @@ input {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
-  margin-bottom: 1rem;  /* Separación debajo de los inputs */
+  margin-bottom: 1rem;
 }
 
 input.ng-invalid.ng-touched {
@@ -82,11 +82,11 @@ button.submit {
 
 button.reset:hover,
 button.submit:hover {
-  background-color: #d1c48c;  /* Color al pasar el mouse */
+  background-color: #d1c48c;
 }
 
 @media (max-width: 768px) {
   .form-grid {
-    grid-template-columns: 1fr;  /* Para pantallas pequeñas, ponemos los campos en una sola columna */
+    grid-template-columns: 1fr;  
   }
 }
