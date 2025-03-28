@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
   private readonly api = inject(ProductApiService);
-  showModal = false; // 👈 bandera para mostrar u ocultar el modal
+  showModal = false; //  bandera para mostrar u ocultar el modal
   showDeleteModal = false;
   products: Product[] = [];
   searchTerm = '';
@@ -89,13 +89,20 @@ export class ProductListComponent implements OnInit {
 
   onAddProduct(): void {
     console.log("click en boton abrir modal")
-    //this.showModal = true; // 👈 activa el modal
+    //this.showModal = true; //  activa el modal
 
     this.router.navigate(['/crear-producto']);
   }
 
+
+  onEditProducto(productId: string): void {
+    console.log("click en boton abrir modal"+productId)
+    this.selectedProductId = productId;
+    this.showModal = true; //  activa el modal
+  }
+
   onModalClose(): void {
-    this.showModal = false; // 👈 cierra el modal
+    this.showModal = false; //  cierra el modal
   }
 
   onModalSubmit(newProduct: Product): void {
@@ -112,7 +119,7 @@ export class ProductListComponent implements OnInit {
 
 
   onDeleteModalClose(): void {
-    this.showDeleteModal = false; // 👈 cierra el modal
+    this.showDeleteModal = false; //  cierra el modal
   }
 
 

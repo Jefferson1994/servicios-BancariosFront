@@ -85,52 +85,7 @@ dateMismatchValidator(control: AbstractControl) {
 }
 
 
-
-  // Método para verificar si el ID existe, se ejecuta cuando el campo pierde el foco
-  /*checkIdExists(event: Event) {
-    const id = (event.target as HTMLInputElement).value;
-
-    // Validación de longitud mínima y máxima (3 a 10 caracteres)
-    if (id.length < 3) {
-      this.idExistsError = 'El ID debe tener al menos 3 caracteres.';
-      this.form.get('id')?.setErrors({ minLength: true }); // Marca como error por longitud insuficiente
-      return;  // Si no pasa la validación de longitud, no hacemos la consulta al backend
-    }
-
-    if (id.length > 10) {
-      this.idExistsError = 'El ID no puede tener más de 10 caracteres.';
-      this.form.get('id')?.setErrors({ maxLength: true }); // Marca como error por longitud excesiva
-      return;  // Si no pasa la validación de longitud, no hacemos la consulta al backend
-    }
-
-    // Validación de formato (alfanumérico)
-    const pattern = /^[a-zA-Z0-9]+$/;
-    if (!pattern.test(id)) {
-      this.idExistsError = 'El ID debe ser alfanumérico.';
-      this.form.get('id')?.setErrors({ pattern: true }); // Marca como error por formato incorrecto
-      return;  // Si no pasa la validación de formato, no hacemos la consulta al backend
-    }
-
-    // Si todas las validaciones anteriores pasaron, realizamos la consulta al backend
-    this.verifyProductIdUseCase.execute(id)
-      .then(isValid => {
-        if (isValid) {
-          // Si el ID ya existe en el backend
-          this.idExistsError = 'El ID ya está en uso, por favor elige otro.';
-          this.form.get('id')?.setErrors({ idExists: true }); // Marca el error de "ID ya existe"
-        } else {
-          // Si el ID es válido (no existe en el backend)
-          this.idExistsError = '';  // Limpiar el mensaje de error
-          this.form.get('id')?.setErrors(null); // Limpiar cualquier error previo
-        }
-      })
-      .catch(() => {
-        // En caso de error con la consulta al backend
-        this.idExistsError = 'Error al verificar el ID. Intenta de nuevo más tarde.';
-        this.form.get('id')?.setErrors({ backendError: true });  // Marcamos un error genérico por fallo en el backend
-      });
-  }*/
-      checkIdExists(control: AbstractControl) {
+ checkIdExists(control: AbstractControl) {
         const id = control.value;
 
         if (id.length < 3 || id.length > 10 || !/^[a-zA-Z0-9]+$/.test(id)) {

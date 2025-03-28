@@ -14,7 +14,7 @@ export const routes: Routes = [
     component: ProductListComponent
   },
   {
-    path: 'crear-producto',  // Ruta correcta
+    path: 'crear-producto',
     component: CreateProductFormularioComponent
   }
 ];
@@ -24,4 +24,4 @@ export const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-//export const routes: Routes = [];
+

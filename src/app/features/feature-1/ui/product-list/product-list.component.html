@@ -41,17 +41,19 @@
           <th>Descripción</th>
           <th>Fecha de liberación</th>
           <th>Fecha de reestructuración</th>
-          <th>Acciones</th>
+          <th>Eliminar</th>
+          <th>Editar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let product of paginatedProducts">
-          <td><img [src]="'https://www.visa.com.ec/dam/VCOM/regional/lac/SPA/Default/Pay%20With%20Visa/Tarjetas/visa-signature-400x225.jpg'" alt="Logo" class="logo" /></td>
+          <td><img [src]="product.logo" alt="Logo" class="logo" /></td>
           <td>{{ product.name }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.date_release }}</td>
           <td>{{ product.date_revision }}</td>
           <td><button (click)="onDelete(product.id, product.name)" class="three-dots-button">...</button></td>
+          <td><button (click)="onEditProducto(product.id)" class="three-dots-button">...</button></td>
         </tr>
       </tbody>
     </table>
@@ -67,12 +69,13 @@
     </select>
   </div>
 
-  <!-- Modal
+
   <app-create-product-modal
     *ngIf="showModal"
     (close)="onModalClose()"
+   
     (submitForm)="onModalSubmit($event)">
-  </app-create-product-modal>-->
+  </app-create-product-modal>
 
   <!-- Modal confirmar Eliminar -->
   <app-delete-product-modal
