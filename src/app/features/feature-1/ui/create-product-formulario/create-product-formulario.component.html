@@ -6,7 +6,7 @@
         <!-- ID -->
         <div>
           <label>ID</label>
-          <input formControlName="id" (blur)="checkIdExists($event)" />
+          <input formControlName="id" id="id" />
           <small *ngIf="f['id'].touched && f['id'].invalid">
             {{ f['id'].errors?.['required'] ? 'Campo requerido' : '' }}
             {{ f['id'].errors?.['minlength'] ? 'El ID debe tener al menos 3 caracteres.' : '' }}

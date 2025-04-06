@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
   providers: [CreateProductUseCase, VerifyProductIdUseCase]
 })
 export class CreateProductFormularioComponent {
+  [x: string]: any;
 
   @Output() close = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<any>();
@@ -110,43 +111,65 @@ dateMismatchValidator(control: AbstractControl) {
     this.form.markAllAsTouched(); // Esto asegura que todos los campos se marquen como tocados antes de la validación
 
     // Esperar la validación asincrónica del campo 'id' (y cualquier otro campo que tenga validación asincrónica)
-    if (this.form.valid) {
-      const newProduct = this.form.value;
 
-      // Llamar al caso de uso para crear el producto
-      this.createProductUseCase.execute(newProduct)
-        .then(response => {
-          console.log('Producto creado:', response.data);
-          this.submitForm.emit(response.data); // Emitimos el producto creado al componente padre
+    this.waitForAsyncValidators().then(() => {
+      if (this.form.valid) {
+        const newProduct = this.form.value;
 
-          // Mostrar mensaje de éxito con SweetAlert
-          Swal.fire({
-            icon: 'success',
-            title: '¡Producto creado!',
-            text: response.message,  // Mostramos el mensaje de éxito del backend
-            confirmButtonText: 'Aceptar',
+        // Llamar al caso de uso para crear el producto
+        this.createProductUseCase.execute(newProduct)
+          .then(response => {
+            console.log('Producto creado:', response.data);
+            this.submitForm.emit(response.data); // Emitimos el producto creado al componente padre
+
+            // Mostrar mensaje de éxito con SweetAlert
+            Swal.fire({
+              icon: 'success',
+              title: '¡Producto creado!',
+              text: response.message,  // Mostramos el mensaje de éxito del backend
+              confirmButtonText: 'Aceptar',
+            });
+            this.reset(); // Limpiar el formulario después de crear el producto
+          })
+          .catch(error => {
+            console.error('Error al crear producto:', error);
+            // Lógica de manejo de errores
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al crear el producto. Intenta de nuevo más tarde.',
+              confirmButtonText: 'Aceptar',
+            });
           });
-          this.reset(); // Limpiar el formulario después de crear el producto
-        })
-        .catch(error => {
-          console.error('Error al crear producto:', error);
-          // Lógica de manejo de errores
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al crear el producto. Intenta de nuevo más tarde.',
-            confirmButtonText: 'Aceptar',
-          });
+      } else {
+        // Si el formulario no es válido, mostramos un mensaje de advertencia
+        Swal.fire({
+          icon: 'warning',
+          title: 'Campos incompletos',
+          text: 'Por favor, completa todos los campos correctamente.',
+          confirmButtonText: 'Aceptar',
         });
-    } else {
-      // Si el formulario no es válido, mostramos un mensaje de advertencia
-      Swal.fire({
-        icon: 'warning',
-        title: 'Campos incompletos',
-        text: 'Por favor, completa todos los campos correctamente.',
-        confirmButtonText: 'Aceptar',
+      }
+
+    });
+
+  }
+
+  async waitForAsyncValidators() {
+    const promises = Object.keys(this.form.controls).map(controlName => {
+      return new Promise((resolve) => {
+        const control = this.form.get(controlName);
+        if (control && control.asyncValidator) {
+          control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+          resolve(true);  // Resolver una vez que se complete la validación asincrónica
+        } else {
+          resolve(true); // Si no hay validadores asíncronos, simplemente resolver
+        }
       });
-    }
+    });
+
+    // Espera que todas las validaciones asíncronas se resuelvan
+    await Promise.all(promises);
   }
 
 
